@@ -9,7 +9,7 @@ SUCCESS=0
 cd ${GITHUB_WORKSPACE}/${WORKING_DIR}
 
 set +e
-OUTPUT=$(sh -c "golint -set_exit_status ./... $*" 2>&1)
+OUTPUT=$(golint -set_exit_status ./... 2>&1)
 SUCCESS=$?
 set -e
 
@@ -17,9 +17,9 @@ if [ ${SUCCESS} -eq 0 ]; then
     exit ${SUCCESS}
 else
     COMMENT="ERROR golint check has failed
+$(echo "${OUTPUT}")"
 
-$("${OUTPUT}")"
-
+    echo ${COMMENT}
     # Send comment to PR
     PAYLOAD=$(echo '{}' | jq --arg body "${COMMENT}" '.body = $body')
     COMMENTS_URL=$(cat ${GITHUB_EVENT_PATH} | jq -r .pull_request.comments_url)
