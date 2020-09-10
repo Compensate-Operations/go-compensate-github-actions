@@ -1,0 +1,21 @@
+name: "Compensate Golang linting"
+description: "Static code analysis powered by golint"
+author: "Compensate-Operations"
+inputs:
+  directory:
+    description: "Working directory of the Action"
+    default: "."
+    required: false
+  token:
+    description: "GitHub token required to post comments on PRs."
+    default: ""
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.directory }}
+    - ${{ inputs.token }}
+branding:
+  icon: "alert-triangle"
+  color: "yellow"
